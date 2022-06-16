@@ -13,45 +13,40 @@
 
     <title>Project</title>
 </head>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#" id="homeBtn">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link px3" href="#" id="interestedBtn">Interested</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Find something" aria-label="Search"
-                    id="searchInput">
-                <button class="btn btn-warning btn-lg" type="submit" id="searchBtn"><i
-                        class="bi bi-search"></i></button>
-            </form>
-        </div>
-    </div>
-</nav>
+
 
 <body class="mt-5 pt-5 px-3 bg-light" onload="onLoad()">
-    <div class="container">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" id="homeBtn">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px3" href="#" id="interestedBtn">Interested</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Find something" aria-label="Search"
+                        id="searchInput">
+                    <button class="btn btn-warning btn-lg" type="submit" id="searchBtn"><i
+                            class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container"></div>
+    <div id="defaultPage"></div>
+    <div id="interestedPage"></div>
+    <div id="detailPage"></div>
 
-    </div>
-    <div id="defaultPage">
-
-    </div>
-    <div id="interestedPage">
-
-    </div>
-    <div id="detailPage">
-
-    </div>
+    
     <script src="./script.js" type="text/javascript"></script>
 </body>
 
