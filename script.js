@@ -39,16 +39,10 @@ document.getElementById('homeBtn').addEventListener('click', function () {
 })
 document.getElementById('interestedBtn').addEventListener('click', function () {
     hideAll()
-    // interestedPage.style.display = 'block'
     defaultPage.style.display = 'block'
     showInterested()
-
 })
-// document.getElementById('detailPage').addEventListener('click', function () {
-//     hideAll()
-//     detailPage.style.display = 'block'
 
-// })
 
 
 function addAnimeList(aniList, status) {
@@ -56,9 +50,10 @@ function addAnimeList(aniList, status) {
     let divBody = document.getElementById('defaultPage')
     divBody.innerHTML = ''
     let text = document.createElement('h2')
-
+    text.classList.add('ms-5')
     if (status == 2) {
         text.innerHTML = 'My anime List'
+        
     } else {
         text.innerHTML = 'Anime List'
     }
@@ -79,14 +74,14 @@ function addAnimeToDiv(status, data) {
     card.classList.add('card')
     card.classList.add('mx-2')
     card.classList.add('my-5')
-    if(status < 2){
+    if (status < 2) {
         card.style.height = "25rem"
         card.style.width = "15rem"
-    }else{
+    } else {
         card.style.height = "30rem"
         card.style.width = "18rem"
     }
-    
+
     card.style.minWidth = '15rem'
     card.classList.add('btn')
 
@@ -110,13 +105,27 @@ function addAnimeToDiv(status, data) {
     infoText.classList.add('text-truncate')
     infoText.innerText = `${data.title} `
     cardBody.appendChild(infoText)
-    if(status == 2){
+    if (status == 2) {
         let detailBtn = document.createElement('button')
         detailBtn.classList.add('btn')
-        detailBtn.classList.add('btn-primary')
-        detailBtn.classList.add('w-50')
+        detailBtn.classList.add('btn-outline-primary')
+        detailBtn.style.width = '8rem'
+        detailBtn.classList.add('mx-1')
         detailBtn.innerText = 'Detail'
+        detailBtn.addEventListener('click',function(){
+            showAnimeDetail(data.id)
+        })
         cardBody.appendChild(detailBtn)
+        let deleteBtn = document.createElement('button')
+        deleteBtn.classList.add('btn')
+        deleteBtn.classList.add('btn-danger')
+        deleteBtn.classList.add('mx-1')
+        deleteBtn.style.width = '5rem'
+        deleteBtn.innerText = 'Delete'
+        deleteBtn.addEventListener('click',function(){
+            showAnimeDetail(data.id)
+        })
+        cardBody.appendChild(deleteBtn)
     }
     card.appendChild(image)
     card.appendChild(cardBody)
@@ -229,3 +238,44 @@ function showInterested() {
         )
 }
 
+function showAnimeDetail(id){
+    console.log(id)
+    fetch(`https://se104-project-backend.du.r.appspot.com/movie/642110327/${id}`).then(response => {
+        return response.json()
+    })
+        .then(incomeData => {
+            console.log(incomeData)
+            showAnimeDetailToDiv(incomeData)
+        }
+        )
+}
+function showAnimeDetailToDiv(data){
+    hideAll()
+    detailPage.style.display = 'block'
+    let divBody = document.getElementById('detailPage')
+    divBody.innerHTML = ''
+    divBody.classList.add('container-fluid')
+    divBody.classList.add('p-5')
+    
+    let subDiv = document.createElement('div')
+    subDiv.classList.add('row')
+    let picDiv = document.createElement('div')
+    picDiv.classList.add('col-3')
+    let pic = document.createElement('img')
+    pic.style.minWidth = '15rem'
+    pic.classList.add('w-100')
+    pic.classList.add('img-thumbnail')
+    pic.src = `${data.image_url}`
+    picDiv.appendChild(pic)
+    subDiv.appendChild(picDiv)
+    let contentDiv = document.createElement('div')
+    contentDiv.classList.add('col-9')
+    contentDiv.classList.add('ps-3')
+    let animeName = document.createElement('h3')
+    animeName.innerHTML = data.title
+    animeName.classList.add('pb-2')
+    animeName.classList.add('border-bottom')
+    contentDiv.appendChild(animeName)
+    subDiv.appendChild(contentDiv)
+    divBody.appendChild(subDiv)
+}
