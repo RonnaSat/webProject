@@ -56,10 +56,10 @@ function addAnimeList(aniList, status) {
     let divBody = document.getElementById('defaultPage')
     divBody.innerHTML = ''
     let text = document.createElement('h2')
-    
-    if(status == 2){
+
+    if (status == 2) {
         text.innerHTML = 'My anime List'
-    }else{
+    } else {
         text.innerHTML = 'Anime List'
     }
     divBody.appendChild(text)
@@ -79,8 +79,14 @@ function addAnimeToDiv(status, data) {
     card.classList.add('card')
     card.classList.add('mx-2')
     card.classList.add('my-5')
-    card.style.width = "15rem"
-    card.style.height = "25rem"
+    if(status < 2){
+        card.style.height = "25rem"
+        card.style.width = "15rem"
+    }else{
+        card.style.height = "30rem"
+        card.style.width = "18rem"
+    }
+    
     card.style.minWidth = '15rem'
     card.classList.add('btn')
 
@@ -98,19 +104,30 @@ function addAnimeToDiv(status, data) {
     let cardBody = document.createElement('div')
     cardBody.classList.add('card-body')
     let infoText = document.createElement('p')
-    infoText.classList.add('card-text')
+    infoText.classList.add('card-title')
     infoText.classList.add('w-75')
     infoText.classList.add('d-inline-block')
     infoText.classList.add('text-truncate')
     infoText.innerText = `${data.title} `
     cardBody.appendChild(infoText)
+    if(status == 2){
+        let detailBtn = document.createElement('button')
+        detailBtn.classList.add('btn')
+        detailBtn.classList.add('btn-primary')
+        detailBtn.classList.add('w-50')
+        detailBtn.innerText = 'Detail'
+        cardBody.appendChild(detailBtn)
+    }
     card.appendChild(image)
     card.appendChild(cardBody)
-    if (status<2){
+    if (status < 2) {
         card.addEventListener('dblclick', function () {
             let text = `Add ${data.title} to favorites?`;
             if (confirm(text)) {
-                addToFav(data, status)
+                if (status == 0) {
+                    addToFav(data, status)
+                } else if (status == 1)
+                    addToFavSearch(data, status)
             }
         })
     }
@@ -166,6 +183,40 @@ function addToFav(data, status) {
         return null
     })
 }
+function addToFavSearch(data, status) {
+    fetch('https://se104-project-backend.du.r.appspot.com/movies', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: '642110327',
+            movie: {
+                url: `${data.url}`,
+                image_url: `${data.image_url}`,
+                title: `${data.title}`,
+                synopsis: `${data.synopsis}`,
+                type: `${data.type}`,
+                episodes: `${data.episodes}`,
+                score: `${data.score}`,
+                rated: `${data.rating}`,
+            }
+        })
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json()
+        } else {
+            throw Error(response.statusText)
+        }
+    }).then(data => {
+        console.log('success', data)
+        alert(`anime ${data.title} is now added`)
+        showInterested()
+    }).catch(error => {
+        return null
+    })
+}
+
 
 function showInterested() {
     fetch('https://se104-project-backend.du.r.appspot.com/movies/642110327').then(response => {
@@ -173,8 +224,8 @@ function showInterested() {
     })
         .then(incomeData => {
             console.log(incomeData)
-            addAnimeList(incomeData,2)
+            addAnimeList(incomeData, 2)
         }
-    )
+        )
 }
 
