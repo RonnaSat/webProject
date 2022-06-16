@@ -39,7 +39,8 @@ document.getElementById('homeBtn').addEventListener('click', function () {
 })
 document.getElementById('interestedBtn').addEventListener('click', function () {
     hideAll()
-    interestedPage.style.display = 'block'
+    // interestedPage.style.display = 'block'
+    defaultPage.style.display = 'block'
     showInterested()
 
 })
@@ -53,9 +54,14 @@ document.getElementById('interestedBtn').addEventListener('click', function () {
 function addAnimeList(aniList, status) {
 
     let divBody = document.getElementById('defaultPage')
-    divBody.innerHTML = ""
+    divBody.innerHTML = ''
     let text = document.createElement('h2')
-    text.innerHTML = 'Anime List'
+    
+    if(status == 2){
+        text.innerHTML = 'My anime List'
+    }else{
+        text.innerHTML = 'Anime List'
+    }
     divBody.appendChild(text)
     let contentDiv = document.createElement('div')
     contentDiv.id = 'contentCard'
@@ -83,6 +89,8 @@ function addAnimeToDiv(status, data) {
         image.src = `${data.images.jpg.image_url} `
     } else if (status == 1) {
         image.src = `${data.image_url} `
+    } else if (status == 2) {
+        image.src = `${data.image_url} `
     }
 
     image.classList.add('card-img-top')
@@ -98,12 +106,14 @@ function addAnimeToDiv(status, data) {
     cardBody.appendChild(infoText)
     card.appendChild(image)
     card.appendChild(cardBody)
-    card.addEventListener('dblclick', function () {
-        let text = `Add ${data.title} to favorites?`;
-        if (confirm(text)) {
-            addToFav(data, status)
-        }
-    })
+    if (status<2){
+        card.addEventListener('dblclick', function () {
+            let text = `Add ${data.title} to favorites?`;
+            if (confirm(text)) {
+                addToFav(data, status)
+            }
+        })
+    }
     divBody.appendChild(card)
 }
 
@@ -163,23 +173,8 @@ function showInterested() {
     })
         .then(incomeData => {
             console.log(incomeData)
-            showInterestedList(incomeData)
+            addAnimeList(incomeData,2)
         }
     )
 }
 
-function showInterestedList(aniList) {
-
-    let divBody = document.getElementById('interestedPage')
-    divBody.innerHTML = ""
-    let text = document.createElement('h2')
-    text.innerHTML = 'My anime List'
-    divBody.appendChild(text)
-    let contentDiv = document.createElement('div')
-    contentDiv.id = 'contentCard'
-    contentDiv.classList.add('container')
-    contentDiv.classList.add('d-flex')
-    contentDiv.classList.add('flex-wrap')
-    divBody.appendChild(contentDiv)
-    
-}
