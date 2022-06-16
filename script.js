@@ -57,7 +57,16 @@ function addAnimeList(aniList, status) {
     } else {
         text.innerHTML = 'Anime List'
     }
+    
     divBody.appendChild(text)
+    if(aniList == ''){
+        let empty = document.createElement('h4')
+        empty.classList.add('ms-5')
+        empty.classList.add('ps-5')
+        empty.classList.add('text-muted')
+        empty.innerHTML = 'No result!!!'
+        divBody.appendChild(empty)
+    }
     let contentDiv = document.createElement('div')
     contentDiv.id = 'contentCard'
     contentDiv.classList.add('container')
@@ -123,7 +132,10 @@ function addAnimeToDiv(status, data) {
         deleteBtn.style.width = '5rem'
         deleteBtn.innerText = 'Delete'
         deleteBtn.addEventListener('click',function(){
-            showAnimeDetail(data.id)
+            let text = `Delete ${data.title} from favorites?`;
+            if (confirm(text)) {
+                deleteAnime(data.id)
+            }
         })
         cardBody.appendChild(deleteBtn)
     }
@@ -266,7 +278,16 @@ function showAnimeDetailToDiv(data){
     pic.classList.add('w-100')
     pic.classList.add('img-thumbnail')
     pic.src = `${data.image_url}`
+    let reviewBox = document.createElement('div')
+    reviewBox.classList.add('d-flex')
+    reviewBox.classList.add('justify-content-center')
+    reviewBox.classList.add('m-3')
+    let animeReview = document.createElement('a')
+    animeReview.href = `${data.url}`
+    animeReview.innerHTML = 'Read full review'
+    reviewBox.appendChild(animeReview)
     picDiv.appendChild(pic)
+    picDiv.appendChild(reviewBox)
     subDiv.appendChild(picDiv)
     let contentDiv = document.createElement('div')
     contentDiv.classList.add('col-9')
@@ -276,6 +297,54 @@ function showAnimeDetailToDiv(data){
     animeName.classList.add('pb-2')
     animeName.classList.add('border-bottom')
     contentDiv.appendChild(animeName)
+    let animeScore = document.createElement('p')
+    animeScore.classList.add('text-secondary')
+    animeScore.classList.add('ps-2')
+    animeScore.innerHTML = `${data.score}/10 scores`
+    contentDiv.appendChild(animeScore)
+    let synopsis = document.createElement('h5')
+    synopsis.innerHTML = 'Synopsis'
+    synopsis.classList.add('p-2')
+    contentDiv.appendChild(synopsis)
+    let animeSynopsis = document.createElement('p')
+    animeSynopsis.classList.add('ps-4')
+    animeSynopsis.classList.add('pb-4')
+    animeSynopsis.classList.add('border-bottom')
+    animeSynopsis.innerHTML = `${data.synopsis}`
+    contentDiv.appendChild(animeSynopsis)
+    let detail = document.createElement('h5')
+    detail.innerHTML = 'Details'
+    detail.classList.add('p-2')
+    contentDiv.appendChild(detail)
+    let animeType = document.createElement('p')
+    animeType.classList.add('ps-4')
+    animeType.innerHTML = `types: ${data.type}`
+    contentDiv.appendChild(animeType)
+    let animeEpisodes = document.createElement('p')
+    animeEpisodes.classList.add('ps-4')
+    animeEpisodes.innerHTML = `episodes: ${data.episodes}`
+    contentDiv.appendChild(animeEpisodes)
+    let animeRate = document.createElement('p')
+    animeRate.classList.add('ps-4')
+    animeRate.innerHTML = `rated: ${data.rated}`
+    contentDiv.appendChild(animeRate)
     subDiv.appendChild(contentDiv)
     divBody.appendChild(subDiv)
+}
+
+function deleteAnime(id){
+    fetch(`https://se104-project-backend.du.r.appspot.com/movie?id=642110327&&movieId=${id}`,{
+        method: 'DELETE'
+    }).then(response => {
+        if (response.status === 200){
+            return response.json()
+        }else{
+            throw Error(response.statusText)
+        }
+    }).then(data => {
+        alert(`${data.title} was removed from DB`)
+        showInterested()
+    }).catch(error => {
+        alert('????')
+    })
 }
