@@ -45,10 +45,30 @@ function addAnimeList(aniList) {
     let counter = 1;
     let divBody = document.getElementById('defaultPage')
     divBody.innerHTML = ""
+    let text = document.createElement('h2')
+    text.innerHTML = 'Anime List'
+    divBody.appendChild(text)
+    let contentDiv = document.createElement('div')
+    contentDiv.id = 'contentCard'
+    contentDiv.classList.add('container')
+    contentDiv.classList.add('d-flex')
+    contentDiv.classList.add('flex-wrap')
+    divBody.appendChild(contentDiv)
     for (ani of aniList) {
         addStudentToDiv(counter++, ani)
     }
 }
 function addStudentToDiv(index,data){
-
+    let divBody = document.getElementById('contentCard')
+    let card = document.createElement('div')
+    card.classList.add('card')
+    card.classList.add('m-2')
+    card.style.width = "12rem";
+    card.style.height = "16rem"
+    let image = document.createElement('img')
+    image.src = `${data.images.jpg.image_url} `
+    image.classList.add('card-img-top')
+    card.appendChild(image)
+    
+    divBody.appendChild(card)
 }
